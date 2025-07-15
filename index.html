@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday!</title>
+  <style>
+    body {
+      background-color: #151d38;
+      color: white;
+      margin: 0;
+      font-family: 'Share Tech Mono', monospace;
+      text-align: center;
+      overflow-x: hidden; /* allow horizontal hidden */
+      overflow-y: auto;    /* allow vertical scrolling */
+      height: auto;
+    }
+     body.fade-out { opacity: 0; }
+    h1 { margin: 40px; }
+    html { height: 100%; }
+    h1 { margin: 40px; }
+    #countdown_box  {
+      margin: 40px auto;
+      background: #07102e;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-size: 2em;
+      color:red;
+    }
+    #hbd_song{
+      display:none;
+}
+    #birthday_box {
+      display: none;
+      color: gold;
+      font-family: "Pacifico", cursive;
+      margin: 40px auto;
+      background: #07102e;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-size: 2em;
+    }
+    .cake-svg { width: 200px; height: auto; float: right; margin: 20px; }
+    .slideshow-container {
+      max-width: 400px;
+      position: relative;
+      margin: auto;
+      border: 10px solid gold;
+      border-radius: 20px;
+      box-shadow: 0 0 30px gold;
+    }
+    .slides { display: none; }
+    .slides img { width: 100%; border-radius: 10px; }
+    canvas { position: fixed; top:0; left:0; width:100%; height:100%; display:none; }
+    #cake { text-align:center; font-size:5em; margin-bottom:50px; }
+  </style>
+</head>
+<body>
+  <h1 id="ruko">Ruko birthday ane do pahle</h1>
+<div id="stop_img"><img id="hand" src= "https://img1.picmix.com/output/stamp/normal/6/4/8/8/1558846_60ad4.gif" alt="STOP IMAge" </div>
+  <div id="countdown_box">
+    <div id="timer">Loading...</div>
+  </div>
+
+  <div id="birthday_box">
+    <h1>🎉 Happy Birthday!   🎉</h1>
+    <div ><span><img width="350px" id="cake" src="cake.gif" alt= "cake is here"</span></div>
+
+    <div class="slideshow-container">
+      <div class="slides"><img src="cute_har.png" alt="Slide 1"></div>
+      <div class="slides"><img src="beaut_har.png" alt="Slide 2"></div>
+      <div class="slides"><img src="pgl_har.png" alt="Slide 3"></div>
+    </div>
+  </div>
+
+  <canvas id="fireworks"></canvas>
+
+<audio controls id="hbd_song" ><source src="happy.mp3" type="audio/mpeg"  ></audio>
+
+  <script>
+    function updateCountdown() {
+      const now = new Date();
+      const targetDate = new Date('2025-07-15T08:58:00');
+      const diff = targetDate - now;
+      if (diff <= 0) {
+        document.getElementById('hbd_song').play();
+        document.getElementById('ruko').style.display = 'none';
+        document.getElementById('hand').style.display = 'none';document.getElementById('countdown_box').style.display = 'none';
+        document.getElementById('birthday_box').style.display = 'block';
+        document.getElementById('fireworks').style.display = 'block';
+        clearInterval(countdownInterval);
+        startSlideshow();
+        startFireworks();
+        return;
+      }
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+      document.getElementById('timer').textContent = `${days}d ${hours}h ${minutes}m ${seconds}s remaining`;
+    }
+    const countdownInterval = setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    function startSlideshow() {
+      let slideIndex = 0;
+      const slides = document.getElementsByClassName("slides");
+      function showSlides() {
+        for (let i = 0; i < slides.length; i++) slides[i].style.display = "none";
+        slideIndex++;
+        if (slideIndex > slides.length) slideIndex = 1;
+        slides[slideIndex-1].style.display = "block";
+        setTimeout(showSlides, 2000);
+      }
+      showSlides();
+    }
+
+    function startFireworks() {
+      const canvas = document.getElementById('fireworks');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      class Particle {
+        constructor(x, y, color) {
+          this.x = x;
+          this.y = y;
+          this.color = color;
+          this.radius = Math.random() * 3 + 2;
+          this.alpha = 1;
+          this.speedX = Math.random() * 6 - 3;
+          this.speedY = Math.random() * 6 - 3;
+        }
+        draw() {
+          ctx.globalAlpha = this.alpha;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = this.color;
+          ctx.fill();
+        }
+        update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          this.alpha -= 0.02;
+        }
+      }
+      let particles = [];
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          particles[i].draw();
+          if (particles[i].alpha <= 0) particles.splice(i, 1);
+        }
+        requestAnimationFrame(animate);
+      }
+      setInterval(() => {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const color = `hsl(${Math.random() * 360},100%,50%)`;
+        for (let i = 0; i < 30; i++) {
+          particles.push(new Particle(x, y, color));
+        }
+      }, 500);
+      animate();
+    }
+  </script>
+</body>
+</html>
