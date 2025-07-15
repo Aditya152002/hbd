@@ -75,7 +75,7 @@
 
   <canvas id="fireworks"></canvas>
 
-<audio ><source src="happy.mp3" type="audio/mpeg"  ></audio>
+<audio controls id="hbd_song" ><source src="happy.mp3" type="audio/mpeg"  ></audio>
 
   <script>
     function updateCountdown() {
@@ -83,6 +83,7 @@
       const targetDate = new Date('2025-07-15T08:58:00');
       const diff = targetDate - now;
       if (diff <= 0) {
+        document.getElementById('hbd_song').play();
         document.getElementById('ruko').style.display = 'none';
         document.getElementById('hand').style.display = 'none';document.getElementById('countdown_box').style.display = 'none';
         document.getElementById('birthday_box').style.display = 'block';
