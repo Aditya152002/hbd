@@ -53,10 +53,9 @@
     .slides img { width: 100%; border-radius: 10px; }
     canvas { position: fixed; top:0; left:0; width:100%; height:100%; display:none; }
     #cake { text-align:center; font-size:5em; margin-bottom:50px; }
-    #celebration { text-decoration: none; color: white; font-size: 2em; margin: 50px 40px; display: none; background-color: red; width:300px; padding:2px; border-radius:6px;}
-  </style>
+        </style>
 </head>
-<body>
+<body><div id="container">
   <h1 id="ruko">Ruko birthday ane do pahle</h1>
 <div id="stop_img"><img id="hand" src= "https://img1.picmix.com/output/stamp/normal/6/4/8/8/1558846_60ad4.gif" alt="STOP IMAge" </div>
   <div id="countdown_box">
@@ -74,14 +73,13 @@
     </div>
 
   <div style="text-align:center;">
-<p> Mein socha, Meri pyari dost ko thoda alag andaj me wish krna chahiye, so, I choose that idea. Hope you like this. Well,</br><b> WISH YOU A VERY HAPPY BIRTHDAY TO YOU</b>
+<p> Mein socha, Meri pyari dost ko thoda alag andaj me wish krna chahiye, so, I choose that idea. Hope you like this. Well,</br><b> 💐WISH YOU A VERY HAPPY BIRTHDAY TO YOU 💐</b>
 </p></div>
-  
-</div>
-  <canvas id="fireworks"></canvas>
-<div style="text-align:center;">
-<a href="https://sherryuser.github.io/cake-blow/"  id="celebration"><p>Let's Celebrate</p></a></div>
+  <h3 style="color:white;"> 🫸Wait for 1 mins! your Cake is preparing 😉</h3>
+<span style="color:white;">Set the candles and blow out only when you see the cake. Don't try to eat it.</span>
 
+  <canvas id="fireworks"></canvas>
+</div>
 
   <audio id="song" src="Happy.mp3"></audio>
   <audio id="fire_work" src="fireworks.mp3"></audio>
@@ -97,34 +95,26 @@
   document.getElementById('countdown_box').style.display = 'none';
         document.getElementById('birthday_box').style.display = 'block';
         document.getElementById('fireworks').style.display = 'block';
-        document.getElementById('celebration').style.display = 'block';
         clearInterval(countdownInterval);
         startSlideshow();
         startFireworks();
-  const song = document.getElementById('song');
-  const fireWorkSound = document.getElementById('fire_work');
-  const birthdayBox = document.getElementById('cake');
+const song = document.getElementById('song');
+const fireWorkSound = document.getElementById('fire_work');
+const birthdayBox = document.getElementById('container');
 
-song.play().then(() => {
-    console.log('Music started automatically!');
-  }).catch(() => {
-    // Autoplay blocked, alert and wait for click
-    alert('Autoplay blocked. Tap the birthday box to play music.');
-    birthdayBox.addEventListener('click', () => {
-      song.play();
-      fireWorkSound.play();
-      showMessage();
-    }, { once: true });
-    return;
-  });
+// Try autoplay first
+song.play().catch(() => {
+  alert('Tap the birthday area to play the birthday song');
+});
 
-  // Play fireworks sound anyway (some browsers allow this)
-  fireWorkSound.play().catch(() => {});
+fireWorkSound.play().catch(() => {});
 
-  // Show message if music started automatically
-  showMessage();
+if (birthdayBox) {
+  birthdayBox.addEventListener('click', () => {
+    song.play();
+    fireWorkSound.play();
 
-  function showMessage() {
+    // Show temporary message
     const msg = document.createElement('div');
     msg.textContent = '🎵 Music is starting! Enjoy! 🎉';
     msg.style.position = 'fixed';
@@ -142,8 +132,15 @@ song.play().then(() => {
     setTimeout(() => {
       msg.remove();
     }, 3000);
-  }
+
+  }, { once: true });
 }
+setTimeout(() => {
+  window.location.href = 'https://sherryuser.github.io/cake-blow/'; 
+}, 90000);
+  return;
+}
+
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
       const minutes = Math.floor((diff / (1000 * 60)) % 60);
